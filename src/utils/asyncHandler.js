@@ -1,6 +1,6 @@
 const asyncHandler = (asynFunc)=> async (req,res,next)=>{
     try {
-        await asynFunc(req,res,next)
+        return await asynFunc(req,res,next)
     } catch (error) {
         res.status(err.code||400).json({
             success:false,
@@ -8,4 +8,4 @@ const asyncHandler = (asynFunc)=> async (req,res,next)=>{
         })
     }
 }
-export {asyncHandler}
+export { asyncHandler }
