@@ -20,7 +20,7 @@ const registerUser = asyncHandler(async (req, res) => {
         feilds?.trim() === "") ){
             throw new ApiError(400,"all feilds are complusory")
     }
-    const existedUser =User.findOne({
+    const existedUser =await User.findOne({
         $or:[{username},{email}]
     })
     if(existedUser){
@@ -31,6 +31,8 @@ const registerUser = asyncHandler(async (req, res) => {
     console.log(req.files.avatar)
     const coverImageLocalPath=req.files?.coverImage[0]?.path;
     console.log(req.files.coverImage)
+
+
     if(!avatarLocalPath){
         throw new ApiError(400, "avatar is required")
     }
@@ -40,7 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400,"avatar is required")
     }
 
-    const user=awaitUser.create({
+    const user=await User.create({
         fullName,
         email,
         avatar:avatar.url,
