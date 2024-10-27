@@ -5,6 +5,18 @@ cloudinary.config({
     api_key:process.env.API_KEY , 
     api_secret: process.env.API_SECRET // Click 'View API Keys' above to copy your API secret
 });
+const deleteAvatarFromCloudinary = async (avatarUrl) => {
+    if (!avatarUrl) return;
+
+    // Extract the public ID from the Cloudinary URL
+    const publicId = avatarUrl.split('/').pop().split('.')[0]; // Extracts the public ID
+    try {
+        await cloudinary.uploader.destroy(publicId); // Deletes the avatar using the public ID
+    } catch (error) {
+        console.error("Error deleting avatar from Cloudinary:", error);
+        throw new ApiError(500, "Error deleting previous avatar");
+    }
+};
 const fileUploadOnCloudinary=async (localFilePath)=>{
     try {
         if(!localFilePath) return null
@@ -21,4 +33,4 @@ const fileUploadOnCloudinary=async (localFilePath)=>{
         return null
     }
 }
-export { fileUploadOnCloudinary }
+export { fileUploadOnCloudinary,deleteAvatarFromCloudinary }
